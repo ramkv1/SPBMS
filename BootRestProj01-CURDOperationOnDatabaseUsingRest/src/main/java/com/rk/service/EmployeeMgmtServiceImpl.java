@@ -3,8 +3,8 @@ package com.rk.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.rk.Exception.EmplyeeNotFoundException;
 import com.rk.dao.EmployeeDAOImpl;
-import com.rk.dao.IEmployeeDAO;
 import com.rk.model.Employee;
 
 
@@ -17,7 +17,29 @@ public class EmployeeMgmtServiceImpl implements IEmployeeMgmtService {
 	@Override
 	public String registerEmployee(Employee employee) {
 		
-		return "Employee is saved with the id values::";
+		try {
+			employeeDAOImpl.insert(employee);
+			return "Employee is saved with the id values::"+employee.getEname();
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			return "Employee Details are Not Found";
+		}
+		
 	}
+	
+
+	@Override
+	public String getEmployeeById(int id) throws EmplyeeNotFoundException {
+		try {
+			String employee=employeeDAOImpl.findByID(id);
+			return employee;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "Employee Details are Not Found";
+		}
+		
+	}
+
 
 }
