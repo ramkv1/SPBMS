@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,4 +51,17 @@ public class EmployeeOperationRestController {
 			return new ResponseEntity<String>("",HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+//===========================================
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity<?> DeleteEmployeeDetails(@PathVariable int id){
+		try {
+			String result=service.DeleteEmployeeBYId(id);
+			return new ResponseEntity<String>(result,HttpStatus.OK);
+		}
+		catch (EmplyeeNotFoundException e) {
+			e.printStackTrace();
+			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
 }

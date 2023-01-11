@@ -23,7 +23,7 @@ public class EmployeeMgmtServiceImpl implements IEmployeeMgmtService {
 		} catch (Exception e) {
 			
 			e.printStackTrace();
-			return "Employee Details are Not Found";
+			return "Employee Details are Not Inserted";
 		}
 		
 	}
@@ -39,6 +39,19 @@ public class EmployeeMgmtServiceImpl implements IEmployeeMgmtService {
 			return "Employee Details are Not Found";
 		}
 		
+	}
+
+
+	@Override
+	public String DeleteEmployeeBYId(int id) throws EmplyeeNotFoundException {
+		try {
+			String employee=employeeDAOImpl.deleteById(id);
+			return employee;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return "Employee Details are Not Found";
+		}
 	}
 
 

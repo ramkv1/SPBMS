@@ -11,12 +11,14 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.rk.Exception.EmplyeeNotFoundException;
 import com.rk.model.Employee;
 
 @Repository("empDAO")
 public class EmployeeDAOImpl implements IEmployeeDAO {
 	private static final String INSERT_EMPLOYEE_QUERY="INSERT INTO EMPLOYEE_INFO(ENAME,DESG,SALARY) VALUES(?,?,?)";
 	private static final String FETCH_EMPLOYEE_QUERY="SELECT * FROM EMPLOYEE_INFO WHERE ENO=";
+	private static final String DELETE_EMPLOYEE_QUERY="DELETE FROM EMPLOYEE_INFO WHERE ENO =";
 	@Autowired
 	private DataSource ds;
 	
@@ -55,10 +57,10 @@ public class EmployeeDAOImpl implements IEmployeeDAO {
 			Statement st=con.createStatement();
 			ResultSet rs=st.executeQuery(FETCH_EMPLOYEE_QUERY+id);
 			String Ename="";
-			if(rs.next()) {
-				Ename=rs.getString(2);
+			while(rs.next()) {
+				Ename=rs.getInt(1)+" "+rs.getString(2)+" "+rs.getString(3)+" "+rs.getDouble(4);
 			}
-			return "Employee Name with given id::"+Ename;
+			return "Employee Details are:"+Ename;
 			
 		}catch (SQLException se) {
 			se.printStackTrace();
@@ -66,5 +68,21 @@ public class EmployeeDAOImpl implements IEmployeeDAO {
 		}
 
 	}
+//=====================================================================================================
+
+@Override
+public String deleteById(int id) throws EmplyeeNotFoundException {
+
+	try {
+		Connection con=ds.getConnection();
+		Statement st=con.createStatement();
+		st.execute(DELETE_EMPLOYEE_QUERY+id);
+		return id+"::are Deleted From Table";
+	} catch (SQLException se) {
+		se.printStackTrace();
+		return null;
+	}
+}
+	
 	
 }//main
